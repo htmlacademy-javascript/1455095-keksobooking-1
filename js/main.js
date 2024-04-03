@@ -34,7 +34,7 @@ const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
 
-const getInt = function(minInt, maxInt, countInt = 0){
+const getInt = (minInt, maxInt, countInt = 0) => {
   if (minInt < 0 || maxInt < 0) {
     return NaN;
   }
@@ -101,14 +101,9 @@ const createPost = (index) => ({
   },
 });
 
-const getPosts = () => {
-  const posts = [];
+const getPostsArr = () =>
+  Array.from({length: POST_COUNT}, (_, currentIndex) =>
+    createPost(currentIndex + 1)
+  );
 
-  for (let i = 1; i <= POST_COUNT; i++){
-    posts.push(createPost(i));
-  }
-
-  return posts;
-};
-
-getPosts();
+getPostsArr();
