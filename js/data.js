@@ -77,4 +77,4 @@ const getPosts = () => {
   return posts;
 };
 
-getPosts();
+export { getPosts };
