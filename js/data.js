@@ -1,4 +1,4 @@
-import { getInt, getValueOfArray, getMixedArray } from './util.js';
+import * as U from './util.js';
 
 const POST_COUNT = 10;
 
@@ -36,38 +36,32 @@ const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
 
-const getUrl = (int) => {
-  if (int < 10) {
-    return `img/avatars/user0${[int]}.png`;
-  } else {
-    return `img/avatars/user${[int]}.png`;
-  }
-};
+const getUrl = (int) => int < 10 ? `img/avatars/user0${[int]}.png` : `img/avatars/user${[int]}.png`;
 
 const createPost = (index) => ({
   author: {
     avatar: getUrl(index),
   },
   offer: {
-    title: getValueOfArray(TITLE_ARRAY),
-    address: `${getInt(LATITUDE_MIN, LATITUDE_MAX, 5)} ${getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5)}`,
-    price: getInt(1, 50000),
-    type: getValueOfArray(TYPE_ARRAY),
-    rooms: getInt(0, 5),
-    guests: getInt(0, 10),
-    checkin: getValueOfArray(TIME_ARRAY),
-    checkout: getValueOfArray(TIME_ARRAY),
-    features: getMixedArray(FEATURES_ARRAY),
-    description: getValueOfArray(DESCRIPTION_ARRAY),
-    photos: getMixedArray(PHOTOS_ARRAY),
+    title: U.getValueOfArray(TITLE_ARRAY),
+    address: `${U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5)} ${U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5)}`,
+    price: U.getInt(1, 50000),
+    type: U.getValueOfArray(TYPE_ARRAY),
+    rooms: U.getInt(0, 5),
+    guests: U.getInt(0, 10),
+    checkin: U.getValueOfArray(TIME_ARRAY),
+    checkout: U.getValueOfArray(TIME_ARRAY),
+    features: U.getMixedArray(FEATURES_ARRAY),
+    description: U.getValueOfArray(DESCRIPTION_ARRAY),
+    photos: U.getMixedArray(PHOTOS_ARRAY),
   },
   location: {
-    lat: getInt(LATITUDE_MIN, LATITUDE_MAX, 5),
-    lng: getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5),
+    lat: U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5),
+    lng: U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5),
   },
 });
 
-const getPosts = () => {
+export const getPosts = () => {
   const posts = [];
 
   for (let i = 1; i <= POST_COUNT; i++){
@@ -76,5 +70,3 @@ const getPosts = () => {
 
   return posts;
 };
-
-export { getPosts };

@@ -1,4 +1,4 @@
-const getInt = (minInt, maxInt, countInt = 0) => {
+export const getInt = (minInt, maxInt, countInt = 0) => {
   if (minInt < 0 || maxInt < 0) {
     return NaN;
   }
@@ -14,9 +14,9 @@ const getInt = (minInt, maxInt, countInt = 0) => {
   return parseFloat(floatInt.toFixed(countInt));
 };
 
-const getValueOfArray = (array) => array[getInt(0, array.length - 1)];
+export const getValueOfArray = (array) => array[getInt(0, array.length - 1)];
 
-const getMixedArray = (initArray) => {
+export const getMixedArray = (initArray) => {
   const randomLength = getInt(0, initArray.length - 1);
   const mixedArray = [];
 
@@ -33,5 +33,3 @@ const getMixedArray = (initArray) => {
 
   return mixedArray;
 };
-
-export {getInt, getValueOfArray, getMixedArray};
