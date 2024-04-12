@@ -36,9 +36,26 @@ const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
 
+export const typeDecoding = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель'
+};
+
+export const featuresDecoding = {
+  wifi: 'Wi-Fi',
+  dishwasher: 'посудомойка',
+  parking: 'парковка',
+  washer: 'стиральная машина',
+  elevator: 'лифт',
+  conditioner: 'кондиционер',
+};
+
 const getUrl = (int) => int < 10 ? `img/avatars/user0${[int]}.png` : `img/avatars/user${[int]}.png`;
 
-const createPost = (index) => ({
+const createDataPost = (index) => ({
   author: {
     avatar: getUrl(index),
   },
@@ -65,7 +82,7 @@ export const getPosts = () => {
   const posts = [];
 
   for (let i = 1; i <= POST_COUNT; i++){
-    posts.push(createPost(i));
+    posts.push(createDataPost(i));
   }
 
   return posts;
