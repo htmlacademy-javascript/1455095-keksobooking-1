@@ -12,6 +12,14 @@ const TITLE_ARRAY = [
   'Идеальная локация',
 ];
 
+export const TYPE_ARRAY_DECODING = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель'
+};
+
 const TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIME_ARRAY = ['12:00', '13:00', '14:00'];
 const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
@@ -36,49 +44,36 @@ const LATITUDE_MAX = 35.70000;
 const LONGITUDE_MIN = 139.70000;
 const LONGITUDE_MAX = 139.80000;
 
-export const typeDecoding = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель'
-};
+function getUrl(int) {
+  return int < 10 ? `img/avatars/user0${[int]}.png` : `img/avatars/user${[int]}.png`;
+}
 
-export const featuresDecoding = {
-  wifi: 'Wi-Fi',
-  dishwasher: 'посудомойка',
-  parking: 'парковка',
-  washer: 'стиральная машина',
-  elevator: 'лифт',
-  conditioner: 'кондиционер',
-};
+function createDataPost(index) {
+  return ({
+    author: {
+      avatar: getUrl(index),
+    },
+    offer: {
+      title: U.getValueOfArray(TITLE_ARRAY),
+      address: `${U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5)} ${U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5)}`,
+      price: U.getInt(1, 50000),
+      type: U.getValueOfArray(TYPE_ARRAY),
+      rooms: U.getInt(1, 5),
+      guests: U.getInt(1, 10),
+      checkin: U.getValueOfArray(TIME_ARRAY),
+      checkout: U.getValueOfArray(TIME_ARRAY),
+      features: U.getMixedArray(FEATURES_ARRAY),
+      description: U.getValueOfArray(DESCRIPTION_ARRAY),
+      photos: U.getMixedArray(PHOTOS_ARRAY),
+    },
+    location: {
+      lat: U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5),
+      lng: U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5),
+    },
+  });
+}
 
-const getUrl = (int) => int < 10 ? `img/avatars/user0${[int]}.png` : `img/avatars/user${[int]}.png`;
-
-const createDataPost = (index) => ({
-  author: {
-    avatar: getUrl(index),
-  },
-  offer: {
-    title: U.getValueOfArray(TITLE_ARRAY),
-    address: `${U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5)} ${U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5)}`,
-    price: U.getInt(1, 50000),
-    type: U.getValueOfArray(TYPE_ARRAY),
-    rooms: U.getInt(0, 5),
-    guests: U.getInt(0, 10),
-    checkin: U.getValueOfArray(TIME_ARRAY),
-    checkout: U.getValueOfArray(TIME_ARRAY),
-    features: U.getMixedArray(FEATURES_ARRAY),
-    description: U.getValueOfArray(DESCRIPTION_ARRAY),
-    photos: U.getMixedArray(PHOTOS_ARRAY),
-  },
-  location: {
-    lat: U.getInt(LATITUDE_MIN, LATITUDE_MAX, 5),
-    lng: U.getInt(LONGITUDE_MIN, LONGITUDE_MAX, 5),
-  },
-});
-
-export const getPosts = () => {
+export function getPosts() {
   const posts = [];
 
   for (let i = 1; i <= POST_COUNT; i++){
@@ -86,4 +81,4 @@ export const getPosts = () => {
   }
 
   return posts;
-};
+}

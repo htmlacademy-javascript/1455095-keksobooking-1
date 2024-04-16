@@ -26,7 +26,7 @@ function extractNum (param) {
 
 extractNum('2023 год');
 
-const getFullStr = function(initStr, lengthStr, sumbols){
+function getFullStr(initStr, lengthStr, sumbols){
   if (initStr.length > lengthStr) {
     return initStr;
   }
@@ -43,12 +43,11 @@ const getFullStr = function(initStr, lengthStr, sumbols){
 
     return needSymbols + initStr;
   }
-};
+}
 
 getFullStr('qwerty', 4, '0');
 
-
-const getInt1 = function(minInt, maxInt, countInt = 0){
+function getInt1(minInt, maxInt, countInt = 0){
   if (minInt < 0 || maxInt < 0) {
     return NaN;
   }
@@ -62,6 +61,6 @@ const getInt1 = function(minInt, maxInt, countInt = 0){
   const floatInt = Math.random() * (maxInt - minInt) + minInt;
 
   return parseFloat(floatInt.toFixed(countInt));
-};
+}
 
 getInt1(1, 2);
