@@ -2,84 +2,77 @@ import * as Data from './data.js';
 
 const posts = Data.getPosts();
 
-const container = document.querySelector('#map-canvas');
-const postTemplate = document.querySelector('#card').content.querySelector('.popup');
+function gereratePopupFeatures(features) {
+  const featuresArray = features.map(
+    (feature) => `<li class="popup__feature popup__feature--${feature}"></li>`
+  );
+  return featuresArray.join('');
+}
 
-const createPost = (post) => {
-  const postElement = postTemplate.cloneNode(true);
-  const offer = post.offer;
+function getFilledPostTempalte({ author, offer }) {
+  return `
+    <article class="popup">
+      <img class="popup__avatar ${author.avatar ? '' : 'hidden'}" src="${author.avatar ? author.avatar : ''}" width="70" height="70" alt="Аватар пользователя">
+      <h3 class="popup__title ${offer.title ? '' : 'hidden'}">${offer.title ? offer.title : ''}</h3>
+      <p class="popup__text popup__text--address ${offer.address ? '' : 'hidden'}">${offer.address ? offer.address : ''}</p>
+      <p class="popup__text popup__text--price ${offer.price ? '' : 'hidden'}">${offer.price ? offer.price : ''}<span>₽/ночь</span></p>
+      <h4 class="popup__type ${offer.type ? '' : 'hidden'}">${offer.type ? Data.TYPE_ARRAY_DECODING[offer.type] : ''}</h4>
 
-  const checkInsert = (selector, value) => {
-    const element = postElement.querySelector(selector);
-    if (value) {
-      element.textContent = value;
-    } else {
-      element.style.display = 'none';
-    }
-  };
+      <p class="popup__text popup__text--capacity ${offer.guests && offer.rooms ? '' : 'hidden'}">${offer.rooms ? offer.rooms : ''} комнаты для ${offer.guests ? offer.guests : ''} гостей</p>
+      <p class="popup__text popup__text--time ${offer.checkin && offer.checkout ? '' : 'hidden'}">Заезд после ${offer.checkin ? offer.checkin : ''}, выезд до ${offer.checkout ? offer.checkout : ''}</p>
+      <ul class="popup__features">${gereratePopupFeatures(offer.features)}</ul>
+      <p class="popup__description ${offer.description ? '' : 'hidden'}">${offer.description ? offer.description : ''}</p>
+      <div class="popup__photos">${offer.photos.map((url) =>`<img src="${url}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}</div>
+    </article>
+  `;
+}
 
-  checkInsert('.popup__title', offer.title);
-  checkInsert('.popup__text--address', offer.address);
-  checkInsert('.popup__description', offer.description);
-  checkInsert('.popup__avatar', post.author.avatar);
+// //  Вариант с функциями
 
+// function isValueEmpty(value){
+//   return !value;
+// }
 
-  if (offer.price) {
-    postElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь`;
-  } else {
-    postElement.querySelector('.popup__text--price').style.display = 'none';
-  }
+// function getHideClass(...args) {
+//   if(args.some(isValueEmpty)){
+//     return 'hidden';
+//   } else {
+//     return '';
+//   }
+// }
 
-  if (offer.rooms && offer.guests) {
-    postElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
-  } else {
-    postElement.querySelector('.popup__text--capacity').style.display = 'none';
-  }
+// function getContent(value){
+//   if (!(isValueEmpty(value))) {
+//     return value;
+//   } else {
+//     return '';
+//   }
+// }
 
-  if (offer.checkin && offer.checkout) {
-    postElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
-  } else {
-    postElement.querySelector('.popup__text--time').style.display = 'none';
-  }
+// function getFilledPostTempalte({ author, offer }) {
+//   return `
+//     <article class="popup">
+//       <img src="${getContent(author.avatar)}" class="popup__avatar ${getHideClass(author.avatar)}" width="70" height="70" alt="Аватар пользователя">
+//       <h3 class="popup__title ${getHideClass(offer.title)}">${getContent(offer.title)}</h3>
+//       <p class="popup__text popup__text--address ${getHideClass(offer.address)}">${getContent(offer.address)}</p>
+//       <p class="popup__text popup__text--price ${getHideClass(offer.price)}">${getContent(offer.price)} <span>₽/ночь</span></p>
+//       <h4 class="popup__type ${getHideClass(offer.type)}">${offer.type ? Data.TYPE_ARRAY_DECODING[offer.type] : ''}</h4>
+//       <p class="popup__text popup__text--capacity ${getHideClass(offer.rooms, offer.guests)}">${getContent(offer.rooms)} комнаты для ${getContent(offer.guests)} гостей</p>
+//       <p class="popup__text popup__text--time ${getHideClass(offer.checkin, offer.checkout)}">Заезд после ${getContent(offer.checkin)}, выезд до ${getContent(offer.checkout)}</p>
+//       <ul class="popup__features">${gereratePopupFeatures(offer.features)}</ul>
+//       <p class="popup__description ${getHideClass(offer.description)}">${getContent(offer.description)}</p>
+//       <div class="popup__photos">${offer.photos.map((url) =>`<img src="${url}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('')}</div>
+//     </article>
+//   `;
+// }
 
-  if (offer.type){
-    for (const prop in Data.typeDecoding) {
-      if (prop === offer.type) {
-        postElement.querySelector('.popup__type').textContent = Data.typeDecoding[prop];
-      }
-    }
-  }
+function createPost(post) {
+  const postTemplate = getFilledPostTempalte(post);
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(postTemplate, 'text/html');
+  const element = doc.body.firstChild;
 
-  if (offer.features) {
-    const arrRusFeatures = [];
-
-    offer.features.forEach((element) => {
-      for (const prop in Data.featuresDecoding) {
-        if (element === prop) {
-          arrRusFeatures.push(Data.featuresDecoding[prop]);
-        }
-      }
-    });
-
-    postElement.querySelector('.popup__features').textContent = arrRusFeatures.join(', ');
-  }
-
-  if (offer.photos){
-    const photoList = postElement.querySelector('.popup__photos');
-    const photoElement = postElement.querySelector('.popup__photo').cloneNode(true);
-    postElement.querySelector('.popup__photo').remove();
-
-    for (const value of offer.photos) {
-      const photoClone = photoElement.cloneNode(true);
-      photoClone.src = value;
-      photoList.append(photoClone);
-    }
-  }
-
-  const postFragment = document.createDocumentFragment();
-  postFragment.append(postElement);
-  container.append(postFragment);
-};
+  document.querySelector('#map-canvas').append(element);
+}
 
 createPost(posts[0]);
-
