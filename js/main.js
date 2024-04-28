@@ -1,3 +1,1 @@
-import { getPosts } from './dsta.js';
-
-getPosts();
+import './popup.js';
