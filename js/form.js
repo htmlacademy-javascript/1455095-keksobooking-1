@@ -4,7 +4,7 @@ function disableForm(selector) {
   const list = block.querySelectorAll('select, input, button, textarea');
 
   list.forEach((item) => {
-    item.setAttribute('disabled', '');
+    item.disabled = true;
   });
 }
 
@@ -17,7 +17,7 @@ function enableForm(selector) {
   const list = block.querySelectorAll('select, input, button, textarea');
 
   list.forEach((item) => {
-    item.removeAttribute('disabled');
+    item.disabled = false;
   });
 }
 
