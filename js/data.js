@@ -20,21 +20,6 @@ export const TYPE_ARRAY_DECODING = {
   hotel: 'Отель'
 };
 
-export const maxCapacityOfRoom = {
-  1: [1],
-  2: [1, 2],
-  3: [1, 2, 3],
-  100: [0],
-};
-
-export const minPriceOfType = {
-  bungalow: 0,
-  flat: 1000,
-  hotel: 3000,
-  house: 5000,
-  palace: 10000,
-};
-
 const TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIME_ARRAY = ['12:00', '13:00', '14:00'];
 const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];

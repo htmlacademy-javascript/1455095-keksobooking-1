@@ -1,4 +1,22 @@
-import * as Data from './data.js';
+const maxCapacityOfRoom = {
+  1: [1],
+  2: [1, 2],
+  3: [1, 2, 3],
+  100: [0],
+};
+
+const minPriceOfType = {
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000,
+};
+
+const formElement = document.querySelector('.ad-form');
+const priceExpression = /^[0-9]+$/;
+const maxPrice = 100000;
+const roomNumber = formElement.querySelector('#room_number');
 
 function disableForm(selector) {
   const block = document.querySelector(selector);
@@ -26,8 +44,6 @@ function enableForm(selector) {
 enableForm('.ad-form');
 enableForm('.map__filters');
 
-const formElement = document.querySelector('.ad-form');
-
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
   errorClass: 'ad-form__element--invalid',
@@ -37,8 +53,9 @@ const pristine = new Pristine(formElement, {
   errorTextClass: 'text-help'
 });
 
+
 function validatePrice(value) {
-  return /^[0-9]+$/.test(value) && value <= 100000;
+  return priceExpression.test(value) && value <= maxPrice;
 }
 
 pristine.addValidator(
@@ -47,21 +64,20 @@ pristine.addValidator(
 );
 
 function validateCapacity(value) {
-  if (value.length) {
-    const roomValue = parseInt(formElement.querySelector('#room_number').value, 10);
-    const capacityValue = parseInt(value, 10);
-    return Data.maxCapacityOfRoom[roomValue].includes(capacityValue);
+  if (!value.length) {
+    return;
   }
+
+  const roomValue = parseInt(formElement.querySelector('#room_number').value, 10);
+  const capacityValue = parseInt(value, 10);
+  return maxCapacityOfRoom[roomValue].includes(capacityValue);
 }
 
-function getCapacityErrorMessage() {
-  const roomValue = parseInt(formElement.querySelector('#room_number').value, 10);
 
-  if (roomValue !== 100) {
-    return 'В одной комнате должен быть размещен один гость';
-  } else {
-    return 'Данное помещение не предназначено для гостей';
-  }
+function getCapacityErrorMessage() {
+  const roomValue = parseInt(roomNumber.value, 10);
+
+  return roomValue !== 100 ? 'В одной комнате должен быть размещен один гость' : 'Данное помещение не предназначено для гостей';
 }
 
 pristine.addValidator(
@@ -69,15 +85,15 @@ pristine.addValidator(
   validateCapacity,
   getCapacityErrorMessage);
 
-formElement.querySelector('#room_number').addEventListener('change', () => {
+roomNumber.addEventListener('change', () => {
   pristine.validate(formElement.querySelector('#capacity'));
 });
 
 formElement.querySelector('#type').addEventListener('change', () => {
   const houseTypeElement = formElement.querySelector('#type');
   const priceElement = formElement.querySelector('#price');
-  priceElement.min = Data.minPriceOfType[houseTypeElement.value];
-  priceElement.placeholder = Data.minPriceOfType[houseTypeElement.value];
+  priceElement.min = minPriceOfType[houseTypeElement.value];
+  priceElement.placeholder = minPriceOfType[houseTypeElement.value];
 });
 
 formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
@@ -88,10 +104,12 @@ formElement.querySelector('.ad-form__element--time').addEventListener('change', 
   }
 });
 
-formElement.addEventListener('submit', (evt) => {
+const onFormElementSubmit = (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
     formElement.submit();
   }
-});
+};
+
+formElement.addEventListener('submit', onFormElementSubmit);
