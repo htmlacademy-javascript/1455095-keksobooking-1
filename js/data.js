@@ -76,7 +76,7 @@ function createDataPost(index) {
 export function getPosts() {
   const posts = [];
 
-  for (let i = 1; i <= POST_COUNT; i++){
+  for (let i = 1; i <= POST_COUNT; i++) {
     posts.push(createDataPost(i));
   }
 
