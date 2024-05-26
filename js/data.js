@@ -73,12 +73,14 @@ function createDataPost(index) {
   });
 }
 
-export function getPosts() {
-  const posts = [];
+function getPosts() {
+  const array = [];
 
   for (let i = 1; i <= POST_COUNT; i++) {
-    posts.push(createDataPost(i));
+    array.push(createDataPost(i));
   }
 
-  return posts;
+  return array;
 }
+
+export const posts = getPosts();

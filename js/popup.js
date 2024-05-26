@@ -1,7 +1,5 @@
 import * as Data from './data.js';
 
-const posts = Data.getPosts();
-
 function gereratePopupFeatures(features) {
   const featuresArray = features.map(
     (feature) => `<li class="popup__feature popup__feature--${feature}"></li>`
@@ -9,7 +7,7 @@ function gereratePopupFeatures(features) {
   return featuresArray.join('');
 }
 
-function getFilledPostTempalte({ author, offer }) {
+function createCard({ author, offer }) {
   const { avatar } = author;
   const { title, address, price, type, guests, rooms, checkin, checkout, features, description, photos } = offer;
 
@@ -29,13 +27,4 @@ function getFilledPostTempalte({ author, offer }) {
   `;
 }
 
-function createPost(post) {
-  const postTemplate = getFilledPostTempalte(post);
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(postTemplate, 'text/html');
-  const element = doc.body.firstChild;
-
-  document.querySelector('#map-canvas').append(element);
-}
-
-createPost(posts[0]);
+export { createCard };
