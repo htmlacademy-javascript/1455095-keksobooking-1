@@ -39,9 +39,6 @@ export const getMixedArray = (initArray) => {
 const Keys = {
   ESC: 'Esc',
   ESCAPE: 'Escape',
-}
-
-export const isEscEvent = (evt) => {
-  return (evt.key === Keys.ESC || evt.key === Keys.ESCAPE)
 };
 
+export const isEscEvent = (evt) => (evt.key === Keys.ESC || evt.key === Keys.ESCAPE);

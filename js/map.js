@@ -61,7 +61,7 @@ function createMinorMarker(lat, lng, card) {
   marker
     .addTo(map)
     .bindPopup(card);
-};
+}
 
 mainMarker.on('moveend', (evt) => {
   const coordinates = evt.target.getLatLng();
@@ -75,7 +75,7 @@ const addCards = (array) => {
     const card = createPostElement(variable);
     createMinorMarker(lat, lng, card);
   }
-}
+};
 
 const resetMap = function(){
   mainMarker.setLatLng({
@@ -86,6 +86,6 @@ const resetMap = function(){
     lat: LAT_MAIN,
     lng: LNG_MAIN,
   }, 12);
-}
+};
 
 export { addCards, resetMap };

@@ -26,7 +26,7 @@ const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
 const capacityElement = formElement.querySelector('#capacity');
 const sliderElement = formElement.querySelector('.ad-form__slider');
-const resetButtonElement =  formElement.querySelector('.ad-form__reset');
+const resetButtonElement = formElement.querySelector('.ad-form__reset');
 
 formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
   if (evt.target.matches('#timein')) {
@@ -34,6 +34,15 @@ formElement.querySelector('.ad-form__element--time').addEventListener('change', 
   } else {
     formElement.querySelector('#timein').value = evt.target.value;
   }
+});
+
+const pristine = new Pristine(formElement, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'div',
+  successClass: 'has-success',
+  errorTextClass: 'text-help'
 });
 
 houseElement.addEventListener('change', () => {
@@ -72,14 +81,6 @@ priceElement.addEventListener('input', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
 
-const pristine = new Pristine(formElement, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-  errorTextTag: 'div',
-  successClass: 'has-success',
-  errorTextClass: 'text-help'
-});
 
 function validatePrice(value) {
   return EXPRESSION_PRICE.test(value) && parseInt(value, 10) > formElement.querySelector('#price').min && parseInt(value, 10) <= MAX_PRICE;
@@ -135,7 +136,7 @@ function onFormElementSubmit(){
       sendData(formData);
     }
   });
-};
+}
 
 onFormElementSubmit();
 

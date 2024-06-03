@@ -17,21 +17,20 @@ const ErrorText = {
 
 const getData = function(){
   fetch(`${BASE_URL}${Route.GET_DATA}`)
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    } 
-    showAlert(`${ErrorText.GET_DATA}`);
-  })
-  .then((data) => {
-    addCards(data);
-    enableForm('.map__filters');
-  })
-  .catch(() => {
-    showAlert(`${ErrorText.GET_DATA}`);
-  }
-);
-}
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      showAlert(`${ErrorText.GET_DATA}`);
+    })
+    .then((data) => {
+      addCards(data);
+      enableForm('.map__filters');
+    })
+    .catch(() => {
+      showAlert(`${ErrorText.GET_DATA}`);
+    });
+};
 
 getData();
 
@@ -43,16 +42,16 @@ const sendData = function(formData){
       body: formData,
     },
   )
-  .then((response) => {
-    if (!response.ok) {
-      throw new Error();
-    }
-    showSuccess();
-    resetForm();
-  })
-  .catch(() => {
-    showError();
-  });
-}
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error();
+      }
+      showSuccess();
+      resetForm();
+    })
+    .catch(() => {
+      showError();
+    });
+};
 
 export { sendData };
