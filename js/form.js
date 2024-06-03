@@ -1,3 +1,6 @@
+import { sendData } from './api.js';
+import { resetMap } from './map.js';
+
 const MIN_PRICE_OF_TYPE = {
   bungalow: 0,
   flat: 1000,
@@ -17,20 +20,13 @@ const EXPRESSION_PRICE = /^[0-9]+$/;
 const MAX_PRICE = 100000;
 
 const formElement = document.querySelector('.ad-form');
+const filtersElement = document.querySelector('.map__filters');
 const roomElement = formElement.querySelector('#room_number');
 const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
 const capacityElement = formElement.querySelector('#capacity');
 const sliderElement = formElement.querySelector('.ad-form__slider');
-
-const pristine = new Pristine(formElement, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-  errorTextTag: 'div',
-  successClass: 'has-success',
-  errorTextClass: 'text-help'
-});
+const resetButtonElement =  formElement.querySelector('.ad-form__reset');
 
 formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
   if (evt.target.matches('#timein')) {
@@ -74,6 +70,15 @@ sliderElement.noUiSlider.on('change', () => {
 
 priceElement.addEventListener('input', () => {
   sliderElement.noUiSlider.set(priceElement.value);
+});
+
+const pristine = new Pristine(formElement, {
+  classTo: 'ad-form__element',
+  errorClass: 'ad-form__element--invalid',
+  errorTextParent: 'ad-form__element',
+  errorTextTag: 'div',
+  successClass: 'has-success',
+  errorTextClass: 'text-help'
 });
 
 function validatePrice(value) {
@@ -120,15 +125,19 @@ roomElement.addEventListener('change', () => {
   pristine.validate(formElement.querySelector('#capacity'));
 });
 
-const onFormElementSubmit = (evt) => {
-  evt.preventDefault();
-  const isValid = pristine.validate();
-  if (isValid) {
-    formElement.submit();
-  }
+
+function onFormElementSubmit(){
+  formElement.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+    if (isValid) {
+      const formData = new FormData(evt.target);
+      sendData(formData);
+    }
+  });
 };
 
-formElement.addEventListener('submit', onFormElementSubmit);
+onFormElementSubmit();
 
 function disableForm(selector) {
   const block = document.querySelector(selector);
@@ -142,6 +151,16 @@ function disableForm(selector) {
 
 disableForm('.ad-form');
 disableForm('.map__filters');
+
+export function resetForm(){
+  formElement.reset();
+  filtersElement.reset();
+  resetMap();
+  priceElement.placeholder = 0;
+  sliderElement.noUiSlider.reset();
+}
+
+resetButtonElement.addEventListener('click', resetForm);
 
 export function enableForm(selector) {
   const block = document.querySelector(selector);
