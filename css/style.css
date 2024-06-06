@@ -1047,3 +1047,16 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.alert-active {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  padding: 10px 3px;
+  font-size: 30px;
+  text-align: center;
+  background-color: tomato;
+  color: white;
+}

@@ -1,6 +1,5 @@
-import { addCards } from './map.js';
-import { enableForm, resetForm} from './form.js';
-import { showAlert, showSuccess, showError} from './show-message.js';
+import { initMap } from './map.js';
+import { showAlert, showError} from './show-message.js';
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
 
@@ -15,7 +14,7 @@ const ErrorText = {
 };
 
 
-const getData = function(){
+const getData = function(callback){
   fetch(`${BASE_URL}${Route.GET_DATA}`)
     .then((response) => {
       if (response.ok) {
@@ -24,17 +23,16 @@ const getData = function(){
       showAlert(`${ErrorText.GET_DATA}`);
     })
     .then((data) => {
-      addCards(data);
-      enableForm('.map__filters');
+      callback(data);
     })
     .catch(() => {
       showAlert(`${ErrorText.GET_DATA}`);
     });
 };
 
-getData();
+getData(initMap);
 
-const sendData = function(formData){
+const sendData = function(formData, callback){
   fetch(
     `${BASE_URL}${Route.SEND_DATA}`,
     {
@@ -46,12 +44,12 @@ const sendData = function(formData){
       if (!response.ok) {
         throw new Error();
       }
-      showSuccess();
-      resetForm();
+      callback();
     })
     .catch(() => {
       showError();
     });
 };
+
 
 export { sendData };

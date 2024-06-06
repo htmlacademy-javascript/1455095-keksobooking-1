@@ -88,4 +88,9 @@ const resetMap = function(){
   }, 12);
 };
 
-export { addCards, resetMap };
+function initMap(data){
+  addCards(data);
+  enableForm('.map__filters');
+}
+
+export { initMap, addCards, resetMap };

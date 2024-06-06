@@ -1,5 +1,6 @@
 import { sendData } from './api.js';
 import { resetMap } from './map.js';
+import { showSuccess } from './show-message.js';
 
 const MIN_PRICE_OF_TYPE = {
   bungalow: 0,
@@ -81,7 +82,6 @@ priceElement.addEventListener('input', () => {
   sliderElement.noUiSlider.set(priceElement.value);
 });
 
-
 function validatePrice(value) {
   return EXPRESSION_PRICE.test(value) && parseInt(value, 10) > formElement.querySelector('#price').min && parseInt(value, 10) <= MAX_PRICE;
 }
@@ -126,19 +126,29 @@ roomElement.addEventListener('change', () => {
   pristine.validate(formElement.querySelector('#capacity'));
 });
 
-
-function onFormElementSubmit(){
-  formElement.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const isValid = pristine.validate();
-    if (isValid) {
-      const formData = new FormData(evt.target);
-      sendData(formData);
-    }
-  });
+export function resetForm(){
+  formElement.reset();
+  filtersElement.reset();
+  resetMap();
+  priceElement.placeholder = 0;
+  sliderElement.noUiSlider.reset();
 }
 
-onFormElementSubmit();
+function completeSend(){
+  showSuccess();
+  resetForm();
+}
+
+formElement.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
+    sendData(formData, completeSend);
+  }
+});
+
+resetButtonElement.addEventListener('click', resetForm);
 
 function disableForm(selector) {
   const block = document.querySelector(selector);
@@ -153,15 +163,6 @@ function disableForm(selector) {
 disableForm('.ad-form');
 disableForm('.map__filters');
 
-export function resetForm(){
-  formElement.reset();
-  filtersElement.reset();
-  resetMap();
-  priceElement.placeholder = 0;
-  sliderElement.noUiSlider.reset();
-}
-
-resetButtonElement.addEventListener('click', resetForm);
 
 export function enableForm(selector) {
   const block = document.querySelector(selector);
