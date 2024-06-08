@@ -69,6 +69,7 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const addCards = (array) => {
+  array = array.slice(0, 10);
   for (const variable of array) {
     const { location } = variable;
     const [lat, lng] = [location.lat, location.lng];

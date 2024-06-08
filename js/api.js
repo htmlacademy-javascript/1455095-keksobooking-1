@@ -1,5 +1,7 @@
 import { initMap } from './map.js';
 import { showAlert, showError} from './show-message.js';
+import { filter } from './filters.js';
+
 
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
 
@@ -13,7 +15,6 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
 };
 
-
 const getData = function(callback){
   fetch(`${BASE_URL}${Route.GET_DATA}`)
     .then((response) => {
@@ -24,6 +25,7 @@ const getData = function(callback){
     })
     .then((data) => {
       callback(data);
+      filter(data);
     })
     .catch(() => {
       showAlert(`${ErrorText.GET_DATA}`);
