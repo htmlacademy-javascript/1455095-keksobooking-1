@@ -12,14 +12,6 @@ const TITLE_ARRAY = [
   'Идеальная локация',
 ];
 
-export const TYPE_ARRAY_DECODING = {
-  flat: 'Квартира',
-  bungalow: 'Бунгало',
-  house: 'Дом',
-  palace: 'Дворец',
-  hotel: 'Отель'
-};
-
 const TYPE_ARRAY = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
 const TIME_ARRAY = ['12:00', '13:00', '14:00'];
 const FEATURES_ARRAY = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];

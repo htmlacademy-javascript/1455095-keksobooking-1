@@ -1,3 +1,7 @@
+import { sendData } from './api.js';
+import { resetMap } from './map.js';
+import { showSuccess } from './show-message.js';
+
 const MIN_PRICE_OF_TYPE = {
   bungalow: 0,
   flat: 1000,
@@ -17,11 +21,21 @@ const EXPRESSION_PRICE = /^[0-9]+$/;
 const MAX_PRICE = 100000;
 
 const formElement = document.querySelector('.ad-form');
+const filtersElement = document.querySelector('.map__filters');
 const roomElement = formElement.querySelector('#room_number');
 const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
 const capacityElement = formElement.querySelector('#capacity');
 const sliderElement = formElement.querySelector('.ad-form__slider');
+const resetButtonElement = formElement.querySelector('.ad-form__reset');
+
+formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
+  if (evt.target.matches('#timein')) {
+    formElement.querySelector('#timeout').value = evt.target.value;
+  } else {
+    formElement.querySelector('#timein').value = evt.target.value;
+  }
+});
 
 const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
@@ -30,14 +44,6 @@ const pristine = new Pristine(formElement, {
   errorTextTag: 'div',
   successClass: 'has-success',
   errorTextClass: 'text-help'
-});
-
-formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
-  if (evt.target.matches('#timein')) {
-    formElement.querySelector('#timeout').value = evt.target.value;
-  } else {
-    formElement.querySelector('#timein').value = evt.target.value;
-  }
 });
 
 houseElement.addEventListener('change', () => {
@@ -120,15 +126,29 @@ roomElement.addEventListener('change', () => {
   pristine.validate(formElement.querySelector('#capacity'));
 });
 
-const onFormElementSubmit = (evt) => {
+export function resetForm(){
+  formElement.reset();
+  filtersElement.reset();
+  resetMap();
+  priceElement.placeholder = 0;
+  sliderElement.noUiSlider.reset();
+}
+
+function completeSend(){
+  showSuccess();
+  resetForm();
+}
+
+formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    formElement.submit();
+    const formData = new FormData(evt.target);
+    sendData(formData, completeSend);
   }
-};
+});
 
-formElement.addEventListener('submit', onFormElementSubmit);
+resetButtonElement.addEventListener('click', resetForm);
 
 function disableForm(selector) {
   const block = document.querySelector(selector);
@@ -142,6 +162,7 @@ function disableForm(selector) {
 
 disableForm('.ad-form');
 disableForm('.map__filters');
+
 
 export function enableForm(selector) {
   const block = document.querySelector(selector);
