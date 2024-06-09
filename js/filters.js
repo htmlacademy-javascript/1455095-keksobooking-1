@@ -9,14 +9,14 @@
 
 
 // import { createPostElement } from './popup.js';
-// import { addCards } from './popup.js';
+import { addCards } from './map.js';
 
-
-// const filterElement = document.querySelector('.map__filters');
+const filterElement = document.querySelector('.map__filters');
 // const price = filterElement.querySelector('#housing-price');
 // const rooms = filterElement.querySelector('#housing-rooms');
 // const guests = filterElement.querySelector('#housing-guests');
 // const features = filterElement.querySelector('#housing-features');
+
 
 // function isType(post){
 //   const type = filterElement.querySelector('#housing-type');
@@ -24,7 +24,30 @@
 //   return type.value === offer.type;
 // }
 
-// export function filter(data){
-//   const post = data;
-//   console.log(post);
-// }
+
+function sortArrType(array){
+  const type = filterElement.querySelector('#housing-type');
+
+  type.addEventListener('change', () => {
+    if (type.value !== 'any') {
+      const newArr = [];
+      for (const variable of array) {
+        const offer = variable.offer;
+        if (type.value === offer.type){
+          newArr.push(variable);
+        }
+      }
+      addCards(newArr);
+      // return newArr;
+    }
+  });
+
+}
+
+export function filter(data){
+  data = data.slice();
+  sortArrType(data);
+  // console.log(sortArrType(data));
+  // const posts = data;
+  // console.log(posts);
+}
