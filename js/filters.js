@@ -1,53 +1,39 @@
-// 5.8. Объекты, расположенные неподалёку, можно фильтровать. Фильтрация производится при изменении значений
-// соответствующих полей формы .map__filters по тем же параметрам, которые указываются для объявления:
-
-//     тип жилья;
-//     цена за ночь;
-//     число комнат;
-//     число гостей;
-//     дополнительные удобства.
-
-
-// import { createPostElement } from './popup.js';
 import { addCards } from './map.js';
 
 const filterElement = document.querySelector('.map__filters');
-// const price = filterElement.querySelector('#housing-price');
-// const rooms = filterElement.querySelector('#housing-rooms');
-// const guests = filterElement.querySelector('#housing-guests');
+const type = filterElement.querySelector('#housing-type');
+const price = filterElement.querySelector('#housing-price');
+const rooms = filterElement.querySelector('#housing-rooms');
+const guests = filterElement.querySelector('#housing-guests');
 // const features = filterElement.querySelector('#housing-features');
 
+const PriceFilter = {
+  low: 10000,
+  high: 50000,
+  middle: 50000,
+};
 
-// function isType(post){
-//   const type = filterElement.querySelector('#housing-type');
-//   const offer = { post };
-//   return type.value === offer.type;
-// }
-
-
-function sortArrType(array){
-  const type = filterElement.querySelector('#housing-type');
-
-  type.addEventListener('change', () => {
-    if (type.value !== 'any') {
-      const newArr = [];
-      for (const variable of array) {
-        const offer = variable.offer;
-        if (type.value === offer.type){
-          newArr.push(variable);
-        }
+function filterArray(array){
+  const newArr = array
+    .filter((element) => type.value !== 'any' ? type.value === element.offer.type : true)
+    .filter((element) => {
+      switch (price.value) {
+        case 'any': return true;
+        case 'low': return element.offer.price < PriceFilter.low;
+        case 'high': return element.offer.price > PriceFilter.high;
+        case 'middle': return element.offer.price > PriceFilter.low && element.offer.price < PriceFilter.high;
       }
-      addCards(newArr);
-      // return newArr;
-    }
-  });
-
+    })
+    .filter((element) => rooms.value !== 'any' ? parseInt(rooms.value, 10) === parseInt(element.offer.rooms, 10) : true)
+    .filter((element) => guests.value !== 'any' ? parseInt(guests.value, 10) === parseInt(element.offer.guests, 10) : true);
+  addCards(newArr);
 }
 
-export function filter(data){
+function filter(data){
   data = data.slice();
-  sortArrType(data);
-  // console.log(sortArrType(data));
-  // const posts = data;
-  // console.log(posts);
+  filterElement.addEventListener('change', () => {
+    filterArray(data);
+  });
 }
+
+export { filter };
