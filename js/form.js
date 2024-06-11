@@ -1,6 +1,9 @@
 import { sendData } from './api.js';
 import { resetMap } from './map.js';
+import { resetFilters } from './filters.js';
+import { resetPhoto } from './photo.js';
 import { showSuccess } from './show-message.js';
+
 
 const MIN_PRICE_OF_TYPE = {
   bungalow: 0,
@@ -21,7 +24,6 @@ const EXPRESSION_PRICE = /^[0-9]+$/;
 const MAX_PRICE = 100000;
 
 const formElement = document.querySelector('.ad-form');
-const filtersElement = document.querySelector('.map__filters');
 const roomElement = formElement.querySelector('#room_number');
 const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
@@ -128,8 +130,9 @@ roomElement.addEventListener('change', () => {
 
 export function resetForm(){
   formElement.reset();
-  filtersElement.reset();
+  resetFilters();
   resetMap();
+  resetPhoto();
   priceElement.placeholder = 0;
   sliderElement.noUiSlider.reset();
 }
@@ -162,7 +165,6 @@ function disableForm(selector) {
 
 disableForm('.ad-form');
 disableForm('.map__filters');
-
 
 export function enableForm(selector) {
   const block = document.querySelector(selector);

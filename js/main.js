@@ -1,5 +1,7 @@
+
 import './popup.js';
-import './map.js';
 import './api.js';
-import './form.js';
+import './map.js';
 import './filters.js';
+import './photo.js';
+import './form.js';

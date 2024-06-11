@@ -6,6 +6,7 @@ const LNG_MAIN = 139.7528;
 
 const addressInput = document.querySelector('#address');
 
+
 const map = L.map('map-canvas')
   .on('load', () => {
     enableForm('.ad-form');
@@ -69,20 +70,22 @@ function createMinorMarker(lat, lng, card) {
   addMinorMarker(marker, card);
 }
 
+const markerGroup = L.layerGroup().addTo(map);
+
 function addMinorMarker(marker, card){
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(card);
 }
 
 const addCards = (array) => {
+  markerGroup.clearLayers();
   array = array.slice(0, 10);
   for (const variable of array) {
     const { location } = variable;
     const [lat, lng] = [location.lat, location.lng];
     const card = createPostElement(variable);
-    const markerGroup = L.layerGroup().addTo(map);
-    createMinorMarker(lat, lng, card, markerGroup);
+    createMinorMarker(lat, lng, card);
   }
 };
 

@@ -2,8 +2,10 @@ import { initMap } from './map.js';
 import { showAlert, showError} from './show-message.js';
 import { filter } from './filters.js';
 
-
 const BASE_URL = 'https://28.javascript.htmlacademy.pro/keksobooking';
+
+// На время выполнения запроса к серверу кнопка «Опубликовать» блокируется.
+// При сбросе фильтрация отфильтрованные метки сбрасывается;
 
 const Route = {
   GET_DATA: '/data',
