@@ -29,6 +29,8 @@ const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
 const capacityElement = formElement.querySelector('#capacity');
 const sliderElement = formElement.querySelector('.ad-form__slider');
+
+const submitButton = formElement.querySelector('.ad-form__submit');
 const resetButtonElement = formElement.querySelector('.ad-form__reset');
 
 formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
@@ -138,6 +140,7 @@ export function resetForm(){
 }
 
 function completeSend(){
+  submitButton.disabled = false;
   showSuccess();
   resetForm();
 }
@@ -147,6 +150,7 @@ formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (isValid) {
     const formData = new FormData(evt.target);
+    submitButton.disabled = true;
     sendData(formData, completeSend);
   }
 });

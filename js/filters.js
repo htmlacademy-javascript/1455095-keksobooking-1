@@ -52,6 +52,10 @@ function filter(data){
   filterElement.addEventListener('change', debounce(() => {
     filterArray(data);
   }));
+
+  filterElement.addEventListener('reset', () => {
+    addCards(data);
+  });
 }
 
 function resetFilters(){
