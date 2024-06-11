@@ -1,6 +1,9 @@
 import { sendData } from './api.js';
 import { resetMap } from './map.js';
+import { resetFilters } from './filters.js';
+import { resetPhoto } from './photo.js';
 import { showSuccess } from './show-message.js';
+
 
 const MIN_PRICE_OF_TYPE = {
   bungalow: 0,
@@ -21,12 +24,13 @@ const EXPRESSION_PRICE = /^[0-9]+$/;
 const MAX_PRICE = 100000;
 
 const formElement = document.querySelector('.ad-form');
-const filtersElement = document.querySelector('.map__filters');
 const roomElement = formElement.querySelector('#room_number');
 const priceElement = formElement.querySelector('#price');
 const houseElement = formElement.querySelector('#type');
 const capacityElement = formElement.querySelector('#capacity');
 const sliderElement = formElement.querySelector('.ad-form__slider');
+
+const submitButton = formElement.querySelector('.ad-form__submit');
 const resetButtonElement = formElement.querySelector('.ad-form__reset');
 
 formElement.querySelector('.ad-form__element--time').addEventListener('change', (evt) => {
@@ -128,13 +132,15 @@ roomElement.addEventListener('change', () => {
 
 export function resetForm(){
   formElement.reset();
-  filtersElement.reset();
+  resetFilters();
   resetMap();
+  resetPhoto();
   priceElement.placeholder = 0;
   sliderElement.noUiSlider.reset();
 }
 
 function completeSend(){
+  submitButton.disabled = false;
   showSuccess();
   resetForm();
 }
@@ -144,6 +150,7 @@ formElement.addEventListener('submit', (evt) => {
   const isValid = pristine.validate();
   if (isValid) {
     const formData = new FormData(evt.target);
+    submitButton.disabled = true;
     sendData(formData, completeSend);
   }
 });
@@ -162,7 +169,6 @@ function disableForm(selector) {
 
 disableForm('.ad-form');
 disableForm('.map__filters');
-
 
 export function enableForm(selector) {
   const block = document.querySelector(selector);

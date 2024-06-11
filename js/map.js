@@ -6,6 +6,7 @@ const LNG_MAIN = 139.7528;
 
 const addressInput = document.querySelector('#address');
 
+
 const map = L.map('map-canvas')
   .on('load', () => {
     enableForm('.ad-form');
@@ -28,12 +29,6 @@ const mainMarkerIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
-const minorMarkerIcon = L.icon({
-  iconUrl: './img/pin.svg',
-  iconSize: [40, 40],
-  iconAnchor: [20, 40],
-});
-
 const mainMarker = L.marker(
   {
     lat: LAT_MAIN,
@@ -45,7 +40,21 @@ const mainMarker = L.marker(
   },
 );
 
-mainMarker.addTo(map);
+const mainMarkerLayer = L.layerGroup().addTo(map);
+
+mainMarker.addTo(mainMarkerLayer);
+
+mainMarker.on('moveend', (evt) => {
+  const coordinates = evt.target.getLatLng();
+  addressInput.value = `Широта ${coordinates.lat.toFixed(5)} Долгота ${coordinates.lng.toFixed(5)}`;
+});
+
+const minorMarkerIcon = L.icon({
+  iconUrl: './img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
+});
+
 
 function createMinorMarker(lat, lng, card) {
   const marker = L.marker(
@@ -58,17 +67,20 @@ function createMinorMarker(lat, lng, card) {
     },
   );
 
+  addMinorMarker(marker, card);
+}
+
+const markerGroup = L.layerGroup().addTo(map);
+
+function addMinorMarker(marker, card){
   marker
-    .addTo(map)
+    .addTo(markerGroup)
     .bindPopup(card);
 }
 
-mainMarker.on('moveend', (evt) => {
-  const coordinates = evt.target.getLatLng();
-  addressInput.value = `Lat ${coordinates.lat.toFixed(5)} Lng ${coordinates.lng.toFixed(5)}`;
-});
-
 const addCards = (array) => {
+  markerGroup.clearLayers();
+  array = array.slice(0, 10);
   for (const variable of array) {
     const { location } = variable;
     const [lat, lng] = [location.lat, location.lng];
