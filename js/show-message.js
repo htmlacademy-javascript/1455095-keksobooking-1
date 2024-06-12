@@ -1,7 +1,7 @@
 import { isEscEvent } from './util.js';
 
 const ALERT_SHOW_TIME = 5000;
-const SUCCESS_SHOW_TIME = 2000;
+const SUCCESS_SHOW_TIME = 5000;
 
 const body = document.querySelector('body');
 
@@ -24,11 +24,6 @@ export function showSuccess(){
   setTimeout(() => {
     messageElement.remove();
   }, SUCCESS_SHOW_TIME);
-}
-
-export function showError(){
-  const messageElement = body.querySelector('#error').content.querySelector('.error').cloneNode(true);
-  body.appendChild(messageElement);
 
   window.addEventListener('click', cleanDisplay);
   window.addEventListener('keydown', onWindowKeydown);
@@ -45,4 +40,11 @@ export function showError(){
       window.removeEventListener('keydown', onWindowKeydown);
     }
   }
+}
+
+export function showError(){
+  const messageElement = body.querySelector('#error').content.querySelector('.error').cloneNode(true);
+  body.appendChild(messageElement);
+
+
 }
