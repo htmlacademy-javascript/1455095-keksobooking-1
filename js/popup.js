@@ -26,11 +26,15 @@ function createPostElement({ author, offer }) {
       <h4 class="popup__type ${type ? '' : 'hidden'}">${type ? TYPE_ARRAY_DECODING[type] : ''}</h4>
       <p class="popup__text popup__text--capacity ${guests && rooms ? '' : 'hidden'}">${rooms ? rooms : ''} комнаты для ${guests ? guests : ''} гостей</p>
       <p class="popup__text popup__text--time ${checkin && checkout ? '' : 'hidden'}">Заезд после ${checkin ? checkin : ''}, выезд до ${checkout ? checkout : ''}</p>
-      <ul class="popup__features">${features ? generatePostFeatures(features) : 'hidden'}</ul>
+      <ul class="popup__features ${features ? '' : 'hidden'}">${features ? generatePostFeatures(features) : ''}</ul>
       <p class="popup__description ${description ? '' : 'hidden'}">${description ? description : ''}</p>
-      <div class="popup__photos${photos ? photos.map((url) => `"><img src="${url}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('') : ' hidden">'}"</div>
-    </article>
-  `;
+
+
+      <div class="popup__photos ${photos ? '' : 'hidden'}">${photos ? photos.map((url) => `<img src="${url}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('') : ''}</div>
+
+    </article>`;
 }
 
 export { createPostElement };
+{/* <div class="popup__photos${photos ? photos.map((url) => `"><img src="${url}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('') : ' hidden">'}"</div> */}
+{/* <div class="popup__photos"><img src="" class="popup__photo" width="45" height="40" alt="Фотография жилья"></div> */}

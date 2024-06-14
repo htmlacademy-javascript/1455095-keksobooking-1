@@ -8,9 +8,9 @@ const rooms = filterElement.querySelector('#housing-rooms');
 const guests = filterElement.querySelector('#housing-guests');
 const featuresElement = filterElement.querySelector('#housing-features');
 
-const PriceFilter = {
-  low: 10000,
-  high: 50000,
+const PRICE_FILTER = {
+  LOW: 10000,
+  HIGHT: 50000,
 };
 
 function filterArray(array){
@@ -19,9 +19,9 @@ function filterArray(array){
     .filter((element) => {
       switch (price.value) {
         case 'any': return true;
-        case 'low': return element.offer.price < PriceFilter.low;
-        case 'high': return element.offer.price > PriceFilter.high;
-        case 'middle': return element.offer.price > PriceFilter.low && element.offer.price < PriceFilter.high;
+        case 'low': return element.offer.price < PRICE_FILTER.LOW;
+        case 'high': return element.offer.price > PRICE_FILTER.HIGHT;
+        case 'middle': return element.offer.price > PRICE_FILTER.LOW && element.offer.price < PRICE_FILTER.HIGHT;
       }
     })
     .filter((element) => rooms.value !== 'any' ? parseInt(rooms.value, 10) === parseInt(element.offer.rooms, 10) : true)
