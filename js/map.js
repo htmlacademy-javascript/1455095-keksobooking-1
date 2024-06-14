@@ -6,7 +6,6 @@ const LNG_MAIN = 139.7528;
 
 const addressInput = document.querySelector('#address');
 
-
 const map = L.map('map-canvas')
   .on('load', () => {
     enableForm('.ad-form');
